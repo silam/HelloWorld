@@ -1,0 +1,42 @@
+﻿  matrix_stack.cpp
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\angel.h(63): warning C4305: 'initializing' : truncation from 'double' to 'const GLfloat'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(698): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(699): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(700): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(721): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(723): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(726): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(743): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+  InitShader.cpp
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\angel.h(63): warning C4305: 'initializing' : truncation from 'double' to 'const GLfloat'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(698): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(699): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(700): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(721): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(723): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(726): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(743): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\initshader.cpp(10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
+  HelloWorld.cpp
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\angel.h(63): warning C4305: 'initializing' : truncation from 'double' to 'const GLfloat'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(698): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(699): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(700): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(721): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(723): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(726): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\gl\mat.h(743): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(75): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(77): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(89): warning C4305: 'initializing' : truncation from 'double' to 'float'
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(90): warning C4305: 'initializing' : truncation from 'double' to 'float'
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(127): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(129): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(129): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(129): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(134): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(134): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+c:\users\mspprod\documents\visual studio 2010\projects\helloworld\helloworld\helloworld.cpp(134): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+  Generating Code...
+  HelloWorld.vcxproj -> C:\Users\mspprod\Documents\Visual Studio 2010\Projects\HelloWorld\Debug\HelloWorld.exe
