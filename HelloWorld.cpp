@@ -1,12 +1,20 @@
 /*
- *Skeleton lighting program
- *SEIS750
- *Spring 2012
+ Si Lam
+ Earth
  **/
 
+
+#include <stdio.h>
 #include <GL/Angel.h>
+#include <stdlib.h>
 #include <math.h>
+#include <IL/il.h> //notice the OpenIL include
+
 #pragma comment(lib, "glew32.lib")
+//We have additional libraries to link to now as well
+#pragma comment(lib,"ILUT.lib")
+#pragma comment(lib,"DevIL.lib")
+#pragma comment(lib,"ILU.lib")
 
 //store window width and height
 int ww=500, wh=500;
@@ -54,9 +62,28 @@ GLuint light_position;
 GLuint light_color;
 GLuint ambient_light;
 
-
+vec4* sphereverts;
 vec4* sphere_verts;
 vec3* sphere_normals;
+
+int space = 10;
+int VertexCount = (180 / space) * (360 / space) * 4;
+
+
+// EARTH Day time
+vec2 * earthtexCoord;
+GLuint earthtexMap;
+GLuint * earthvao;
+GLuint * earthvbo;
+static GLuint earchtexName[3];
+
+//We need three texture files
+static GLuint * texName;
+
+
+/// square vertex
+vec4 * squareverts;
+vec2 * texcoords;
 
 void reshape(int width, int height){
 	ww= width;
@@ -67,11 +94,95 @@ void reshape(int width, int height){
 	glViewport( 0, 0, width, height );
 }
 
+void createSquare()
+{
+   squareverts = new vec4[6];
+   texcoords  = new vec2[6];
+   
+   squareverts[0] = vec4(-1, -1, 0, 1);
+   texcoords[0] = vec2(0, 0);
+   squareverts[1] = vec4(1, -1, 0, 1);
+   texcoords[1] = vec2(1, 0);
+   squareverts[2] = vec4(1, 1, 0, 1);
+   texcoords[2] = vec2(1, 1);
+   squareverts[3] = vec4(1, 1, 0, 1);
+   texcoords[3] = vec2(1, 1);
+   squareverts[4] = vec4(-1, 1, 0, 1);
+   texcoords[4] = vec2(0, 1);
+   squareverts[5] = vec4(-1, -1, 0, 1);
+   texcoords[5] = vec2(0, 0);
+}
+void CreateSphere (double R, double H, double K, double Z) {
+    
+	int n;
+    double a;
+    double b;
+    n = 0;
+    
+	sphereverts = new vec4[VertexCount];
+	earthtexCoord = new vec2[VertexCount];
+
+	for( b = 0; b <= 90 - space; b+=space){
+       
+		for( a = 0; a <= 360 - space; a+=space){
+            
+			sphereverts[n] = vec4( R * sin((a) / 180 * M_PI) * sin((b) / 180 * M_PI) - H,
+								   R * cos((a) / 180 * M_PI) * sin((b) / 180 * M_PI) + K,
+								   R * cos((b) / 180 * M_PI) - Z, 
+								   1);
+            earthtexCoord[n] = vec2((2 * b) / 360, 
+									(a) / 360 );
+            
+
+			n++;
+            
+			sphereverts[n] = vec4(R * sin((a) / 180 * M_PI) * sin((b + space) / 180 * M_PI) - H,
+					             R * cos((a) / 180 * M_PI) * sin((b + space) / 180 * M_PI) + K,
+								 R * cos((b + space) / 180 * M_PI) - Z,
+								 1);
+
+			earthtexCoord[n] = vec2((2 *  (b + space)) / 360, 
+									(a) / 360 );
+            
+            
+			n++;
+            
+
+            
+			sphereverts[n] = vec4(R * sin((a + space) / 180 * M_PI) * sin((b) / 180 * M_PI) - H,
+								R * cos((a + space) / 180 * M_PI) * sin((b) / 180 * M_PI) + K,
+								R * cos((b) / 180 * M_PI) - Z,
+								1);
+         
+			earthtexCoord[n] = vec2((2 *  (b)) / 360, 
+									(a + space) / 360 );
+
+
+			n++;
+            
+			sphereverts[n] = vec4( R * sin((a + space) / 180 * M_PI) * sin((b + space) /180 * M_PI) - H,
+									R * cos((a + space) / 180 * M_PI) * sin((b + space) / 180 * M_PI) + K,
+									 R * cos((b + space) / 180 * M_PI) - Z,
+									 1);
+            
+			earthtexCoord[n] = vec2((2 *  (b + space)) / 360, 
+									(a + space) / 360 );
+
+			n++;
+            
+
+            
+		}
+    
+	}
+}
 
 //In this particular case, our normal vectors and vertex vectors are identical since the sphere is centered at the origin
 //For most objects this won't be the case, so I'm treating them as separate values for that reason
 //This could also be done as separate triangle strips, but I've chosen to make them just triangles so I don't have to execute multiple glDrawArrays() commands
 int generateSphere(float radius, int subdiv){
+
+
 	float step = (360.0/subdiv)*(M_PI/180.0);
 
 	int totalverts = ceil(subdiv/2.0)*subdiv * 6;
@@ -119,6 +230,33 @@ int generateSphere(float radius, int subdiv){
 }
 
 void display(void)
+{
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+	
+    mat4 camera = mv =  LookAt(vec4(0,0,5.0+z_distance,1),vec4(0,0,0,1),vec4(0,1,0,0))* RotateX(view_rotx) * RotateY(view_roty) * RotateZ(view_rotz);
+	glUniformMatrix4fv(model_view, 1, GL_TRUE, mv*Translate(0,0,1));
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texName[0]); //which texture do we want?
+	glDrawArrays( GL_TRIANGLES, 0, 6 );
+
+	//mv = camera * RotateY(90)* Translate(0,0,1);
+	//glUniformMatrix4fv(model_view, 1, GL_TRUE, mv);
+	//
+	//glBindTexture(GL_TEXTURE_2D, texName[1]); //which texture do we want?
+	//glDrawArrays( GL_TRIANGLES, 0, 6 );
+
+	//mv = camera* RotateY(-90) * Translate(0,0,1);
+	//glUniformMatrix4fv(model_view, 1, GL_TRUE, mv);
+	//glBindTexture(GL_TEXTURE_2D, texName[2]); //which texture do we want?
+	//glDrawArrays( GL_TRIANGLES, 0, 6 );
+
+   glutSwapBuffers();
+
+
+}
+
+void displaylight(void)
 {
   /*clear all pixels*/
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -249,6 +387,101 @@ void mouse(int button, int state, int x, int y) {
 	}
 }
  
+//Modified slightly from the OpenIL tutorials
+ILuint loadTexFile(const char* filename){
+	
+	ILboolean success; /* ILboolean is type similar to GLboolean and can equal GL_FALSE (0) or GL_TRUE (1)
+    it can have different value (because it's just typedef of unsigned char), but this sould be
+    avoided.
+    Variable success will be used to determine if some function returned success or failure. */
+
+
+	/* Before calling ilInit() version should be checked. */
+	  if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
+	  {
+		/* wrong DevIL version */
+		printf("Wrong IL version");
+		exit(1);
+	  }
+ 
+	  success = ilLoadImage((LPTSTR)filename); /* Loading of image from file */
+	if (success){ /* If no error occured: */
+		//We need to figure out whether we have an alpha channel or not
+		  if(ilGetInteger(IL_IMAGE_BPP) == 3){
+			success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every color component into
+		  unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
+		  }else if(ilGetInteger(IL_IMAGE_BPP) == 4){
+			  success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+		  }else{
+			  success = false;
+		  }
+		if (!success){
+		  /* Error occured */
+		 printf("failed conversion to unsigned byte");
+		 exit(1);
+		}
+	}else{
+		/* Error occured */
+	   printf("Failed to load image ");
+	   printf(filename);
+		exit(1);
+	}
+}
+
+void SetupTextureShader(GLuint program1, 
+						GLuint * vao, 
+						GLuint * vbo, 
+						vec2 * texcoords, 
+						vec4  * verts, 
+						GLuint * texName, 
+						ILuint * ilTexID,
+						int    imagenumber,
+						int    counts)
+{
+	// Create a vertex array object
+    glGenVertexArrays( 1, &vao[0] );
+
+    // Create and initialize any buffer objects
+	glBindVertexArray( vao[0] );
+	glGenBuffers( 2, &vbo[0] );
+    glBindBuffer( GL_ARRAY_BUFFER, vbo[0] );
+    glBufferData( GL_ARRAY_BUFFER, counts*sizeof(vec4), verts, GL_STATIC_DRAW);
+
+	glBindBuffer( GL_ARRAY_BUFFER, vbo[1] );
+    glBufferData( GL_ARRAY_BUFFER, counts*sizeof(vec2), texcoords, GL_STATIC_DRAW);
+
+ 
+	ilBindImage(ilTexID[imagenumber]); /* Binding of IL image name */
+	loadTexFile("images/Earth.png");
+	glBindTexture(GL_TEXTURE_2D, texName[imagenumber]); //bind OpenGL texture name
+
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+   //Note how we depend on OpenIL to supply information about the file we just loaded in
+   glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),0,
+	   ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData());
+
+
+
+    GLuint texMap = glGetUniformLocation(program1, "texture");
+	glUniform1i(texMap, 0);//assign this one to texture unit 0
+
+
+	glBindBuffer( GL_ARRAY_BUFFER, vbo[0] );
+	vPosition = glGetAttribLocation(program1, "vPosition");
+	glEnableVertexAttribArray(vPosition);
+	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glBindBuffer( GL_ARRAY_BUFFER, vbo[1] );
+	GLuint vtexCoord = glGetAttribLocation(program1, "texCoord");
+	glEnableVertexAttribArray(vtexCoord);
+	glVertexAttribPointer(vtexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+
+
+	//Now repeat the process for the second image
+	//ilBindImage(ilTexID[1]);
+}
 void init() {
 
   /*select clearing (background) color*/
@@ -257,12 +490,40 @@ void init() {
 
   //populate our arrays
   spherevertcount = generateSphere(2, 100);
+  
+	//CreateSphere(5, 0,0,0);
 
+
+	createSquare();
 
    // Load shaders and use the resulting shader program
     program1 = InitShader( "vshader-lighting.glsl", "fshader-lighting.glsl" );
 	//program2 = InitShader( "vshader-phongshading.glsl", "fshader-phongshading.glsl" );
 
+	ILuint * ilTexID = new ILuint[3]; /* ILuint is a 32bit unsigned integer.
+    //Variable texid will be used to store image name. */
+	texName   = new GLuint[3];
+
+
+	ilInit(); /* Initialization of OpenIL */
+	ilGenImages(3, ilTexID); /* Generation of three image names for OpenIL image loading */
+	glGenTextures(3, texName); //and we eventually want the data in an OpenGL texture
+
+	earthvao = new GLuint[1];
+	earthvbo = new GLuint[2];
+	
+
+
+
+
+	//SetupTextureShader(program1, earthvao, earthvbo, earthtexCoord, sphereverts, texName, ilTexID, 0, VertexCount);
+	SetupTextureShader(program1, earthvao, earthvbo, texcoords, squareverts, texName, ilTexID, 0, 6);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+	/*
 	// Create a vertex array object
     glGenVertexArrays( 1, &vao[0] );
 
@@ -278,6 +539,9 @@ void init() {
 	glBufferData( GL_ARRAY_BUFFER, spherevertcount*sizeof(vec3), sphere_normals, GL_STATIC_DRAW );
 
 	setupShader(program1);
+	*/
+
+
 
   //Only draw the things in the front layer
 	glEnable(GL_DEPTH_TEST);

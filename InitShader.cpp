@@ -7,7 +7,7 @@ namespace Angel {
 static char*
 readShaderSource(const char* shaderFile)
 {
-    FILE* fp = fopen(shaderFile, "r");
+    FILE* fp = fopen(shaderFile, "rb");
 
     if ( fp == NULL ) { return NULL; }
 
